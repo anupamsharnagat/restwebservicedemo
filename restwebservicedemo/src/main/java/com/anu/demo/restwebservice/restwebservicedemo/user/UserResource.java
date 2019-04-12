@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 
 @RestController
 public class UserResource {
@@ -31,12 +36,16 @@ public class UserResource {
 	
 	//Retrieve specific user
 	@GetMapping("/users/{id}")
-	public User retrieveUser(@PathVariable int id)
+	public Resource<User> retrieveUser(@PathVariable int id)
 	{
 		User user= userdaoService.findOne(id);
 		if(user==null)
 			throw new UserNotFoundException("id=>"+id);
-		return user;
+		
+		Resource<User> resource = new Resource<User>(user);
+		ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAll());
+		resource.add(linkTo.withRel("all-users"));
+		return resource;
 	}
 	
 	//Delete specific user
