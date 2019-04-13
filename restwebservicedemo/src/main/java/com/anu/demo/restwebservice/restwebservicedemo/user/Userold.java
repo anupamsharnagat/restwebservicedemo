@@ -1,12 +1,7 @@
 package com.anu.demo.restwebservice.restwebservicedemo.user;
 
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
@@ -15,11 +10,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 @ApiModel(description="all details about anupam demo User model")
-@Entity
-public class User {
+public class Userold {
 	
-	@Id
-	@GeneratedValue
 	private Integer id;
 	
 	@Size(min=2, message="Name must have atleast 2 charactar")
@@ -30,20 +22,9 @@ public class User {
 	@ApiModelProperty(notes="Birthday must be in past date")
 	private Date birthDate;
 	
-	@OneToMany(mappedBy = "user")
-	private List<Post> posts;
+	protected Userold(){}
 	
-	public List<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-
-	protected User(){}
-	
-	public User(Integer id, String name, Date birthDate) {
+	public Userold(Integer id, String name, Date birthDate) {
 		super();
 		this.id = id;
 		this.name = name;
